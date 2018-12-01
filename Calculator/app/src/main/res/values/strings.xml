@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="del">/</string>
+    <string name="umn">*</string>
+    <string name="Otv">Ответ:</string>
+    <string name="Vv">Введите значение</string>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Kvadratnii_uravnenia</string>
+    <string name="title">Write a,b,c</string>
+    <string name="SampleText">Wow</string>
+    <string name="a">Введите a cюда</string>
+    <string name="bt">Введите b сюда</string>
+    <string name="c">Введите c cюда</string>
+    <string name="otv">Ответы тут</string>
+</resources>
