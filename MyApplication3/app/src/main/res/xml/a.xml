@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
     <com.example.alexb.prettygame.GameView
         android:id="@+id/gameView"
         android:layout_width="0dp"
@@ -14,4 +17,7 @@
         app:layout_constraintStart_toEndOf="@+id/ChangeMode"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+
+
 </resources>

@@ -60,12 +60,14 @@ public class Element {
 
 
  public float  Xdifferent(){
-   return (this.bitmap.getWidth())/2;
+     return (this.bitmap.getWidth()) / 2;
  }
 
-    public float  Ydifferent(){
-        return (this.bitmap.getHeight())/2;
+    public float  Ydifferent() {
+        return (this.bitmap.getHeight()) / 2;
     }
+
+
 
 
 }

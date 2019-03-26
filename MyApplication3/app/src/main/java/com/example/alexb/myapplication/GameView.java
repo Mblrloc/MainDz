@@ -20,20 +20,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context1, AttributeSet attrs) {
         super(context1, attrs);
         getHolder().addCallback(this);
-        gameThread=new GameThread(getHolder(),context1);
-
-
+        gameThread=new GameThread(getHolder(),context1,1);
+        gameThread.start();
+gameThread.doStop();
+context=context1;
 
     }
-
+    public int Mode;
+    public int moneys=1000;//Получить
     private int PlaceOrRotate=0;
-    public GameThread getGameThread() {
-        return gameThread;
-    }
+
     private int selected;
-    private GameThread gameThread;
+    private volatile GameThread gameThread;
 
-
+public Context context;
     public synchronized void selectNewItem(int a) {
         this.selected=a;
          Log.e("Help","New item "+ selected+ " selected");
@@ -78,8 +78,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         synchronized (getHolder()) {
             if (event.getAction()==MotionEvent.ACTION_DOWN) {
-                Log.e("Help", "Touched");
-                Log.e("Help",selected+"");
                 //ADDING
                 if (selected != -1) {//Первое касание находит изначальные координаты
                     if (PlaceOrRotate==0) {
@@ -90,9 +88,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         F2X=event.getX();
                         F2Y=event.getY();
                         PlaceOrRotate=0;
+if (moneys-getCost()>=0) {
+    moneys-=getCost();
+    gameThread.addElement(new Element(getContext(), (int) FX, (int) FY, getRotation(FX, F2X, FY, F2Y), selected));
 
-                        gameThread.addElement(new Element(getContext(), (int)FX, (int) FY, getRotation(FX,F2X,FY,F2Y), selected));
-                        Log.e("Help", "add new Element:" + event.getX() + " " + event.getY() + " " + getRotation(FX,F2X,FY,F2Y) + " " + selected);
+    Log.e("Help", "add new Element:" + event.getX() + " " + event.getY() + " " + getRotation(FX, F2X, FY, F2Y) + " " + selected);
+} else {
+    Toast.makeText(getContext(),"Not enough moneys",Toast.LENGTH_LONG).show();
+}
                     }
 
 
@@ -121,7 +124,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-
+    public int getCost(){
+        return(200);
+    }
 
 
     public float getRotation(float x1,float x2,float y1, float y2){
@@ -132,6 +137,14 @@ if (x2<x1 && y2>y1) rotate+=180;
 
         return rotate;
     }
+
+public void setMode2(){
+        Log.e("Help","New created");
+  this.Mode=2;
+  this.gameThread=new GameThread(getHolder(),context,2);
+    gameThread.start();
+    gameThread.doRun();
+}
 }
 
 

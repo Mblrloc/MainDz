@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -22,10 +23,9 @@ import java.util.Set;
 
 public class GameThread extends Thread {
 
-
+    private int Mode;
     private ArrayList<Element> elements=new ArrayList<>();
     private  Context context;
-    private int Mode=0;
     private final SurfaceHolder surfaceHolder;
 
     private volatile boolean running=true;
@@ -43,57 +43,63 @@ public class GameThread extends Thread {
     }
 
 
-    public  GameThread(SurfaceHolder surfaceHolder1, Context context1){
+    public  GameThread(SurfaceHolder surfaceHolder1, Context context1,int Mode1){
         this.surfaceHolder=surfaceHolder1;
         context=context1;
+this.Mode=Mode1;
+
     }
 
     private Bitmap bitmap;
+public int moneys=1000;
+
+
+
+
 
     public void doStop(){ this.running = false; }
     public void doRun(){ this.running = true; }
 
-
-
     @Override
     public void run(){
 
-        while (running){
+Log.e("Help","Thread is running "+running);
+        paint.setTextSize(100);
+while (running){
             bitmap=BitmapFactory.decodeResource(context.getResources(),R.drawable.floor);
             Canvas canvas=surfaceHolder.lockCanvas();
 
             if(canvas!=null){
                 try {
                     //draw something
-
                     for (int i=0;i<canvas.getHeight()/bitmap.getHeight()+1;i++) {
                         for (int i2=0;i2<canvas.getWidth()/bitmap.getWidth()+1;i2++) {
                             canvas.drawBitmap(bitmap, bitmap.getWidth()*i2, bitmap.getHeight() * i, paint);
                         }
                     }
 //Log.e("Help","Drawing");
-
-                    switch (Mode){
-                        case(0):
-                            //Проектировка
-                            try {
-for (Element e:elements){
-
-        canvas.drawBitmap(e.GetBitmap(), e.getX()-e.Xdifferent(), e.getY()-e.Ydifferent(), paint);
-    }
+                    if (Mode==1) {
+                        //Проектировка
+                        try {
+                            for (Element e : elements) {
+                                canvas.drawBitmap(e.GetBitmap(), e.getX() - e.Xdifferent(), e.getY() - e.Ydifferent(), paint);
                             }
-    catch (  java.util.ConcurrentModificationException e1){
-        Log.e("Help","Помедленнее уважаемый");
-                       }
+                            if (moneys == 0) paint.setColor(Color.RED);
+                            else paint.setColor(Color.CYAN);
+                            canvas.drawText(String.valueOf(moneys) + "$", 75, 150, paint);
 
-
-
-                            break;
-                        case(1):
-                            //Работа механизмов
-
-                            break;
+                        } catch (java.util.ConcurrentModificationException e1) {
+                            Log.e("Help", "Помедленнее уважаемый");
+                        }
                     }
+
+
+             if (Mode==2) {
+                 //Работа механизмов
+                 //    Log.e("Help","Start working");
+                 canvas.drawColor(Color.CYAN);
+             }
+
 
 
                     try {
@@ -110,6 +116,7 @@ for (Element e:elements){
 
         }
 
+
     }
 
 
@@ -121,15 +128,11 @@ public void addElement(Element e){
         Log.e("Help","Element added");
 }
 
-    public void setMode(){
-        if (this.Mode==0) {
-            Mode = 1;
-            Log.e("Help","SetMod_1");
-        }
-        else {
-            this.Mode = 0;
-            Log.e("Help", "SetMod_0");
-        }
-    }
+
+
+
+
+
+
 
 }
